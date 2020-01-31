@@ -1,7 +1,7 @@
 #!/bin/bash
 end=900
 cpus=$(nproc --all)
-logfile=stresspi_$(date +%F-%H-%M-%S).log
+logprefix=stresspi_$(date +%F-%H-%M-%S)
 function cleanup() {
     killall stress
     exit 2
@@ -18,7 +18,8 @@ for ((i = 0; i < $end; i++)); do
     temp_val=$(echo "scale=2;$temp/1000" | bc)
     # freq=$(vcgencmd measure_clock arm | cut -d"=" -f2)
     # freq_val=$(echo "scale=2;$freq/1000000" | bc)
-    echo $temp_val | tee -a $logfile
+    echo $temp_val | tee -a $logprefix.log
     sleep 1
 done
 killall stress
+gnuplot -p -e "filename='$logprefix.log'" plot.gnu > $logprefix.png
