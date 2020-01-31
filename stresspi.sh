@@ -1,9 +1,8 @@
 #!/bin/bash
-
-end=10
+end=900
 cpus=$(nproc --all)
 logfile=stresspi_$(date +%F-%H-%M-%S).log
-cleanup () {
+function cleanup() {
     killall stress
     exit 2
 }
